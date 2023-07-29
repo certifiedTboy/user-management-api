@@ -3,6 +3,7 @@ const helmet = require("helmet");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
+const sanitizer = require("perfect-express-sanitizer");
 const path = require("path");
 const apiV1 = require("./routes/apiV1");
 const GlobalErrorHandler = require("../lib/errorInstances/GlobalErrorHandler");
@@ -49,6 +50,15 @@ app.use(
     extended: expressOptions.urlencodExtended,
   })
 );
+
+app.use(
+  sanitizer.clean({
+    xss: true,
+    noSql: true,
+    sql: true,
+  })
+);
+
 app.use(express.static(path.join(process.cwd(), "public")));
 app.use("/api/v1", apiV1);
 app.use(GlobalErrorHandler);
