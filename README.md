@@ -66,6 +66,8 @@ $ npm run dev (Development server)
 - Login and Logout after successful verification
 - Update personal details
 - Delete Accounts
+- For the sake of testing privileges, on Admin user type can delete other users Account
+- use test-account@gmail.com - password: Password1234$$ for admin privileged account
 
 
 ## Account Creation Flow
