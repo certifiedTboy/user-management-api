@@ -6,6 +6,13 @@ const {
 } = require("../services/userServices");
 const { verifyUserToken } = require("../services/verificationServices");
 
+/**
+ * @method createUser
+ * @param {Request}req
+ * @param {Response}res
+ * @param {NextFunction}next
+ * @return {Promise<User>}
+ */
 const createUser = async (req, res, next) => {
   try {
     const { email, firstName, lastName } = req.body;
@@ -22,10 +29,16 @@ const createUser = async (req, res, next) => {
   }
 };
 
+/**
+ * @method verifyUser
+ * @param {Request}req
+ * @param {Response}res
+ * @param {NextFunction}next
+ * @return {Promise<User>}
+ */
 const verifyUser = async (req, res, next) => {
   try {
     const { userId, verificationToken } = req.body;
-
     const userIsVerified = await verifyUserToken(userId, verificationToken);
     if (userIsVerified) {
       ResponseHandler.ok(
@@ -39,26 +52,35 @@ const verifyUser = async (req, res, next) => {
   }
 };
 
+/**
+ * @method updateUserName
+ * @param {Request}req
+ * @param {Response}res
+ * @param {NextFunction}next
+ * @return {Promise<User>}
+ */
 const updateUserName = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const { firstName, lastName, about } = req.body;
+    const { firstName, lastName } = req.body;
 
-    const updatedUser = await userNameUpdate(
-      userId,
-      firstName,
-      lastName,
-      about
-    );
+    const updatedUser = await userNameUpdate(userId, firstName, lastName);
 
     if (updatedUser) {
-      ResponseHandler.ok(res, updatedUser, "user name changed successfully");
+      ResponseHandler.ok(res, updatedUser, "user update successful");
     }
   } catch (error) {
     next(error);
   }
 };
 
+/**
+ * @method getCurrentUser
+ * @param {Request}req
+ * @param {Response}res
+ * @param {NextFunction}next
+ * @return {Promise<User>}
+ */
 const getCurrentUser = async (req, res, next) => {
   try {
     const userId = req.user.id;
@@ -72,9 +94,34 @@ const getCurrentUser = async (req, res, next) => {
   }
 };
 
+/**
+ * @method viewDashboard
+ * @param {Request}req
+ * @param {Response}res
+ * @param {NextFunction}next
+ * @return {Promise<User>}
+ */
+const viewDashboard = async (req, res, next) => {
+  const userId = req.user.id;
+  try {
+    const currentUser = await checkThatUserExistById(userId);
+
+    if (currentUser) {
+      ResponseHandler.ok(
+        res,
+        currentUser,
+        `You are current sign in as ${currentUser.firstName} - ${currentUser.lastName}`
+      );
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createUser,
   verifyUser,
   updateUserName,
   getCurrentUser,
+  viewDashboard,
 };

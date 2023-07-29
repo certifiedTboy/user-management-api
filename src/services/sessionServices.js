@@ -3,6 +3,12 @@ const User = require("../models/user");
 const dateTimeCalculator = require("../utils/general/dateAndTimeCalculator");
 const { generateJWTToken } = require("../utils/JWT/jwtHelpers");
 
+/**
+ * @method createOrUpdatePlatformSession
+ * @param {string} userId
+ * @param {string} ipAddress
+ * @return {object <UserSession>}
+ */
 const createOrUpdatePlatformSession = async (userId, ipAddress) => {
   let userSession = await getUserPlatformSession(userId);
 
@@ -17,6 +23,11 @@ const createOrUpdatePlatformSession = async (userId, ipAddress) => {
   return userSession.save();
 };
 
+/**
+ * @method getUserPlatformSession
+ * @param {string} userId
+ * @return {object <UserSession}
+ */
 const getUserPlatformSession = async (userId) => {
   let userSession = await UserSession.findOne({ userId });
 
@@ -29,6 +40,12 @@ const getUserPlatformSession = async (userId) => {
   return userSession;
 };
 
+/**
+ * @method getAuthToken
+ * @param {string} userId
+ * @param {number} ttlInHours
+ * @return {string <authToken>}
+ */
 const getAuthToken = async (userId, ttlInHours) => {
   const user = await User.findById(userId);
   if (user) {

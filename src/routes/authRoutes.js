@@ -7,6 +7,7 @@ const {
   verifyPasswordResetData,
 } = require("../controllers/authController");
 const {
+  checkPasswordInputIsEmpty,
   checkPasswordValidity,
   checkPasswordMatch,
   checkEmailValidity,
@@ -16,6 +17,8 @@ const router = express.Router();
 
 router.post(
   "/user/set-password",
+  checkPasswordInputIsEmpty,
+  checkEmailValidity,
   checkPasswordValidity,
   checkPasswordMatch,
   setUserPassword

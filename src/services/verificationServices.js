@@ -7,40 +7,54 @@ const UnprocessableError = require("../../lib/errorInstances/UnprocessableError"
 const ConflictError = require("../../lib/errorInstances/ConflictError");
 const NotFoundError = require("../../lib/errorInstances/NotFoundError");
 
+/**
+ * @method verifyUserToken
+ * @param {string}userId
+ * @param {string} verificationToken
+ * @return {object<email>}
+ */
 const verifyUserToken = async (userId, verificationToken) => {
   const user = await checkUserForVerification(userId);
-
-  console.log(user);
-
   if (user) {
     if (!user.verificationToken) {
       throw new NotFoundError("token does not exist or is invalid");
     }
 
+    // check verificationtoken time validity if it exceeds 24hours
     const now = +new Date();
     const verificationTokenExpiryDate = +user.verificationTokenExpiresAt;
 
     if (now - verificationTokenExpiryDate >= 0) {
+      // deletes user account on late verification attempt
       await deleteUserById(userId);
       throw UnprocessableError("expired verification token");
     }
 
-    if (user.verificationToken !== `${verificationToken}:${userId}`) {
+    if (user.verificationToken !== `${verificationToken}`) {
       throw new ConflictError("invalid verification token");
     }
     return { email: user.email };
   }
 };
 
+/**
+ * @method verifyPasswordResetToken
+ * @param {string}userId
+ * @param {string} passwordResetToken
+ * @return {object<email>}
+ */
 const verifyPasswordResetToken = async (userId, passwordResetToken) => {
   const user = await checkThatUserExistById(userId);
   if (user) {
     if (!user.resetPasswordToken) {
       throw new NotFoundError("token does not exist or is invalid");
     }
+
+    // check passwordResetToken time validity if it exceeds 1hour
     const now = new Date();
     const passwordResetTokenExpiryDate = user.resetPasswordExpires;
 
+    // deletes password reset token on late verification attempt
     if (now - passwordResetTokenExpiryDate >= 0) {
       user.resetPasswordToken = undefined;
       user.resetPasswordExpires = undefined;

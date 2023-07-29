@@ -3,7 +3,14 @@ const UnprocessableError = require("../../../lib/errorInstances/UnprocessableErr
 const checkUserDataInputIsEmpty = async (req, res, next) => {
   try {
     const { firstName, lastName, email } = req.body;
-    if (!firstName || !lastName || !email) {
+    if (
+      !firstName ||
+      !lastName ||
+      !email ||
+      firstName.trim().length === 0 ||
+      lastName.trim().length === 0 ||
+      email.trim().length === 0
+    ) {
       throw new UnprocessableError("all input fields are required");
     } else {
       next();
@@ -16,7 +23,7 @@ const checkUserDataInputIsEmpty = async (req, res, next) => {
 const checkEmailValidity = async (req, res, next) => {
   const { email } = req.body;
   try {
-    if (!email) {
+    if (!email || email.trim().length === 0) {
       throw new UnprocessableError("email field is required");
     }
     let regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -30,10 +37,28 @@ const checkEmailValidity = async (req, res, next) => {
   }
 };
 
+const checkPasswordInputIsEmpty = async (req, res, next) => {
+  try {
+    const { password, confirmPassword } = req.body;
+    if (
+      !password ||
+      !confirmPassword ||
+      password.trim().length === 0 ||
+      confirmPassword.trim().length === 0
+    ) {
+      throw new UnprocessableError("all input fields are required");
+    } else {
+      next();
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 const checkPasswordValidity = async (req, res, next) => {
   const { password } = req.body;
   try {
-    const passcodeLengthIsValid = password.trim().length < 8;
+    const passcodeLengthIsValid = password?.trim().length < 8;
     const valid = {
       hasUpper: /[A-Z]/,
       hasLower: /[a-z]/,
@@ -59,8 +84,7 @@ const checkPasswordValidity = async (req, res, next) => {
 const checkPasswordMatch = async (req, res, next) => {
   try {
     const { password, confirmPassword } = req.body;
-
-    if (password !== confirmPassword) {
+    if (password.trim() !== confirmPassword.trim()) {
       throw new UnprocessableError("password does not match");
     } else {
       next();
@@ -101,7 +125,7 @@ const checkNameDataLength = async (req, res, next) => {
 
 const checkUserDataInputForUpdateIsEmpty = async (req, res, next) => {
   try {
-    const { firstName, lastName, about } = req.body;
+    const { firstName, lastName } = req.body;
     if (!firstName || !lastName) {
       throw new UnprocessableError("all input fields are required");
     } else {
@@ -119,4 +143,5 @@ module.exports = {
   checkPasswordMatch,
   checkNameDataLength,
   checkUserDataInputForUpdateIsEmpty,
+  checkPasswordInputIsEmpty,
 };

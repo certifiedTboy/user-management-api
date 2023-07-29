@@ -1,16 +1,27 @@
 const bcrypt = require("bcryptjs");
 const UnauthenticatedError = require("../../../lib/errorInstances/UnauthenticatedError");
 
-const hashPassword = (plainTextPasword) => {
-  if (!plainTextPasword) {
+/**
+ * @method hashedPassword
+ * @param {string} plainTextPassword
+ * @return {string <hashedPassword>}
+ */
+const hashPassword = (plainTextPassword) => {
+  if (!plainTextPassword) {
     throw new Error("Invalid plain-text password");
   }
   const salt = bcrypt.genSaltSync(10);
-  return bcrypt.hashSync(plainTextPasword, salt);
+  return bcrypt.hashSync(plainTextPassword, salt);
 };
 
-const verifyPassword = (plainTextPasword, hashedPassword) => {
-  if (!bcrypt.compareSync(plainTextPasword, hashedPassword)) {
+/**
+ * @method verifyPassword
+ * @param {string} plainTextPassword
+ * @param {string} hashedPassword
+ * @return {Boolean <true>}
+ */
+const verifyPassword = (plainTextPassword, hashedPassword) => {
+  if (!bcrypt.compareSync(plainTextPassword, hashedPassword)) {
     throw new UnauthenticatedError("Incorrect login credentials");
   }
 };

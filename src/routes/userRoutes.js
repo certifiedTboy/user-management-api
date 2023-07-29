@@ -14,6 +14,9 @@ const {
 const {
   checkUserAccountOwnership,
 } = require("../middlewares/authorization/userAuthorization");
+const {
+  checkVerificationDataInputIsEmpty,
+} = require("../middlewares/validators/verificationDataValidator");
 const Authenticate = require("../middlewares/authorization/Authenticate");
 
 const router = express.Router();
@@ -25,7 +28,7 @@ router.post(
   checkNameDataLength,
   createUser
 );
-router.post("/verify-user", verifyUser);
+router.post("/verify-user", checkVerificationDataInputIsEmpty, verifyUser);
 router.put(
   "/update-username",
   Authenticate,

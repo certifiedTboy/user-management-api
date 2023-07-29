@@ -78,9 +78,9 @@ $ npm run dev (Development server)
 
 ## Authentication Handling Process
 - Authentication and Authorization relies on Jsonwebtoken (JWT)
-- On successful login, the server sends an HTTP only flagged cookie response to client containing a uniqe authoken (JWT). Tokens are signed with the user unique Id, role (ADMIN / USER) and username
+- On successful login, the server sends an HTTP only flagged cookie response to client containing a uniqe authoken (JWT). Tokens are signed with the user unique Id  and user-type (ADMIN / USER) 
 - All subsequent request that requires authorization must be made with the authToken on the request headers. 
-- For testing on POSTMAN agent, refer to [postman interceptor](https://learning.postman.com/docs/sending-requests/cookies/#:~:text=Postman%20can%20capture%20cookies%20for,with%20the%20Postman%20cookie%20jar.)  
+- For testing on POSTMAN agent, refer to [postman interceptor](https://learning.postman.com/docs/sending-requests/cookies/#:~:text=Postman%20can%20capture%20cookies%20for,with%20the%20Postman%20cookie%20jar.) to handle cookie
 - On frontend libraries like React, authorization with cookies are easily handled with [Redux RTK Queries](https://redux-toolkit.js.org/tutorials/rtk-query)
 
 ## API Documentation

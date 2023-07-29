@@ -10,9 +10,15 @@ const generatePasswordResetUrl = require("../utils/url-generator/passwordResetUr
 const createOrUpdatePlatformSession = require("./sessionServices");
 const { sendPasswordResetUrl } = require("./emailServices");
 
+/**
+ * @method updateUserPassword
+ * @param {string} email
+ * @param {string} password
+ * @return {object<User>}
+ */
 const updateUserPassword = async (email, password) => {
   const user = await checkUserForNewPassword(email);
-
+  // To avoid WET code, setting new password and resetting password is handled in this method
   if (user) {
     const hashedPassword = await hashPassword(password);
     if (hashedPassword) {
@@ -37,6 +43,13 @@ const updateUserPassword = async (email, password) => {
   }
 };
 
+/**
+ * @method loginUser
+ * @param {string} email
+ * @param {string} password
+ * @param {string} ipAddress
+ * @return {object <UserSession>}
+ */
 const loginUser = async (email, password, ipAddress) => {
   const user = await checkThatUserIsVerified(email);
   if (user) {
