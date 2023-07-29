@@ -5,13 +5,19 @@ const UnprocessableError = require("../../lib/errorInstances/UnprocessableError"
 const NotFoundError = require("../../lib/errorInstances/NotFoundError");
 const ConflictError = require("../../lib/errorInstances/ConflictError");
 
-const newUser = async (email, firstName, lastName) => {
+/**
+ * @method createNewUser
+ * @param {string} email
+ * @param {string} firstName
+ * @param {string} lastName
+ * @return {object<User>}
+ */
+const createNewUser = async (email, firstName, lastName) => {
   const user = await checkThatUserAlreadyExist(email);
-
   if (!user) {
     const uniqueSuffix = Math.round(Math.random() * 1e9);
-
     const username = email.split("@")[0] + "-" + uniqueSuffix;
+
     const newUser = new User({ email, firstName, lastName, username });
 
     await newUser.save();
@@ -45,30 +51,23 @@ const newUser = async (email, firstName, lastName) => {
   }
 };
 
-const updateUserProfileImage = async (userId, imagePath) => {
-  const user = await checkThatUserExistById(userId);
-
-  if (user) {
-    user.profilePicture = imagePath;
-
-    await user.save();
-    return user;
-  }
-};
-
-const userNameUpdate = async (userId, firstName, lastName, about) => {
+const userNameUpdate = async (userId, firstName, lastName) => {
   const user = await checkThatUserExistById(userId);
 
   if (user) {
     user.firstName = firstName;
     user.lastName = lastName;
-    user.about = about;
 
     await user.save();
     return user;
   }
 };
 
+/**
+ * @method checkThatUserAlreadyExist
+ * @param {string} email
+ * @return {object<User>}
+ */
 const checkThatUserAlreadyExist = async (email) => {
   const user = await User.findOne({ email });
   return user;
@@ -134,12 +133,11 @@ const deleteUserById = async (userId) => {
 };
 
 module.exports = {
-  newUser,
+  createNewUser,
   checkThatUserExistById,
   deleteUserById,
   checkThatUserAlreadyExist,
   checkThatUserIsVerified,
-  updateUserProfileImage,
   userNameUpdate,
   checkUserForNewPassword,
   checkThatUserExistByUsername,

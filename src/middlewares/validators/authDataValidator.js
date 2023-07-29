@@ -30,21 +30,6 @@ const checkEmailValidity = async (req, res, next) => {
   }
 };
 
-const checkAcceptTerms = async (req, res, next) => {
-  const { acceptTerms } = req.body;
-  try {
-    if (!acceptTerms) {
-      throw new UnprocessableError(
-        "You're yet to accept our terms and conditions"
-      );
-    } else {
-      next();
-    }
-  } catch (error) {
-    next(error);
-  }
-};
-
 const checkPasswordValidity = async (req, res, next) => {
   const { password } = req.body;
   try {
@@ -98,7 +83,7 @@ const checkNameDataLength = async (req, res, next) => {
       lastName.match(num)
     ) {
       throw new UnprocessableError(
-        "names should not contain special characters or numbers"
+        "Names should not contain special characters or numbers"
       );
     }
 
@@ -117,7 +102,7 @@ const checkNameDataLength = async (req, res, next) => {
 const checkUserDataInputForUpdateIsEmpty = async (req, res, next) => {
   try {
     const { firstName, lastName, about } = req.body;
-    if (!firstName || !lastName || !about) {
+    if (!firstName || !lastName) {
       throw new UnprocessableError("all input fields are required");
     } else {
       next();
@@ -133,6 +118,5 @@ module.exports = {
   checkPasswordValidity,
   checkPasswordMatch,
   checkNameDataLength,
-  checkAcceptTerms,
   checkUserDataInputForUpdateIsEmpty,
 };

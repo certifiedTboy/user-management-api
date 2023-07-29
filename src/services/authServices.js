@@ -71,10 +71,10 @@ const requestPasswordReset = async (email) => {
         user.resetPasswordToken = passwordResetData.passwordResetToken;
         user.resetPasswordExpires = passwordResetData.expiresAt;
         await user.save();
-        // await sendPasswordResetUrl(
-        //   user.email,
-        //   passwordResetData.passwordResetUrl
-        // );
+        await sendPasswordResetUrl(
+          user.email,
+          passwordResetData.passwordResetUrl
+        );
 
         return { email: user.email };
       }

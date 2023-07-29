@@ -1,18 +1,15 @@
 const ResponseHandler = require("../../lib/generalResponse/ResponseHandler");
 const {
-  newUser,
-  updateUserProfileImage,
+  createNewUser,
   userNameUpdate,
   checkThatUserExistById,
-  checkThatUserExistByUsername,
-  updateUserAbout,
 } = require("../services/userServices");
 const { verifyUserToken } = require("../services/verificationServices");
 
 const createUser = async (req, res, next) => {
   try {
     const { email, firstName, lastName } = req.body;
-    const createdUser = await newUser(email, firstName, lastName);
+    const createdUser = await createNewUser(email, firstName, lastName);
     if (createdUser) {
       ResponseHandler.created(
         res,

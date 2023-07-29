@@ -1,5 +1,10 @@
 const crypto = require("crypto");
 
+/**
+ * @method randomCodeGenerator
+ * @param {Number} length
+ * @return {string}
+ */
 const randomCodeGenerator = (length) => {
   if (length < 1) {
     throw new Error("Minimum length of token is 1");

@@ -2,6 +2,11 @@ const envVariable = require("../../config/config");
 const dateTimeCalculator = require("../general/dateAndTimeCalculator");
 const randomCodeGenerator = require("../general/randomCodeGenerator");
 
+/**
+ * @method generateVerificationUrl
+ * @param {string} userId
+ * @return {object<verificationData>}
+ */
 const generateVerificationUrl = async (userId) => {
   const TOKEN_SEPERATOR = ":";
 
@@ -18,6 +23,7 @@ const generateVerificationUrl = async (userId) => {
   };
 };
 
+// genrate random token for user verification
 const generateToken = () => {
   const verificationToken = randomCodeGenerator(60);
   const expiresAt = dateTimeCalculator(
