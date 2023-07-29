@@ -7,11 +7,11 @@ const sendVerificationUrl = async (email, verificationUrl) => {
   const mailOptions = {
     to: email,
     from: SMTP_USER,
-    subject: "Welcome to WedDev Blog",
+    subject: "Welcome to User management API",
     html: `<div><p> Dear <strong>Valid user</strong> </p>
             <h4> You are a step closer !!! </h4>
             <p> Use the button below to complete your account</p>
-            <a href=${verificationUrl}>Create Account</a>
+            <a href=${verificationUrl}>Verify Account</a>
             <p>Thanks </p>.
             <div>`,
   };
@@ -29,7 +29,7 @@ const sendPasswordResetUrl = async (email, passwordResetUrl) => {
             <a href=${passwordResetUrl}>ResetPassword</a>
 
 
-            <p> If you're unaware, kindly ignore this mail </p>
+            <p> If you're unaware of this development, kindly ignore this mail </p>
             <p>Thanks </p>.
             <div>`,
   };

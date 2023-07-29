@@ -16,7 +16,7 @@ const setUserPassword = async (req, res, next) => {
       ResponseHandler.ok(
         res,
         {},
-        "Registration successful, sign in to continue enjoying our services"
+        "Password changed successfully, proceed to login with your valid credentials"
       );
     }
   } catch (error) {

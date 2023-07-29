@@ -1,8 +1,9 @@
 const ResponseHandler = require("../../lib/generalResponse/ResponseHandler");
 const {
   createNewUser,
-  userNameUpdate,
+  updateUserData,
   checkThatUserExistById,
+  deleteUserById,
 } = require("../services/userServices");
 const { verifyUserToken } = require("../services/verificationServices");
 
@@ -53,18 +54,18 @@ const verifyUser = async (req, res, next) => {
 };
 
 /**
- * @method updateUserName
+ * @method updateUser
  * @param {Request}req
  * @param {Response}res
  * @param {NextFunction}next
  * @return {Promise<User>}
  */
-const updateUserName = async (req, res, next) => {
+const updateUser = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const { firstName, lastName } = req.body;
 
-    const updatedUser = await userNameUpdate(userId, firstName, lastName);
+    const updatedUser = await updateUserData(userId, firstName, lastName);
 
     if (updatedUser) {
       ResponseHandler.ok(res, updatedUser, "user update successful");
@@ -74,6 +75,18 @@ const updateUserName = async (req, res, next) => {
   }
 };
 
+const deleteUser = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const response = await deleteUserById(userId);
+
+    if (response) {
+      ResponseHandler.ok(res, {}, "User delete success");
+    }
+  } catch (error) {
+    next(error);
+  }
+};
 /**
  * @method getCurrentUser
  * @param {Request}req
@@ -121,7 +134,8 @@ const viewDashboard = async (req, res, next) => {
 module.exports = {
   createUser,
   verifyUser,
-  updateUserName,
+  updateUser,
+  deleteUser,
   getCurrentUser,
   viewDashboard,
 };

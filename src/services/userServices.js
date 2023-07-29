@@ -80,7 +80,7 @@ const createNewUser = async (email, firstName, lastName) => {
  * @param {string} lastName
  * @return {object <User>}
  */
-const userNameUpdate = async (userId, firstName, lastName) => {
+const updateUserData = async (userId, firstName, lastName) => {
   const user = await checkThatUserExistById(userId);
 
   if (user) {
@@ -102,23 +102,17 @@ const checkThatUserAlreadyExist = async (email) => {
   return user;
 };
 
+/**
+ * @method checkThatUserExistById
+ * @param {string} email
+ * @return {object<User>}
+ */
 const checkThatUserExistById = async (userId) => {
   const user = await User.findById(userId).select("-password");
   if (!user) {
-    throw new NotFoundError("invalid user token");
-  } else if (!user.isVerified) {
-    throw new NotFoundError("invalid user token");
-  } else {
-    return user;
-  }
-};
-
-const checkThatUserExistByUsername = async (username) => {
-  const user = await User.findOne({ username }).select("-password");
-  if (!user) {
     throw new NotFoundError("User does not exist");
   } else if (!user.isVerified) {
-    throw new NotFoundError("User does not exist");
+    throw new NotFoundError("User is not verified");
   } else {
     return user;
   }
@@ -186,8 +180,7 @@ module.exports = {
   deleteUserById,
   checkThatUserAlreadyExist,
   checkThatUserIsVerified,
-  userNameUpdate,
+  updateUserData,
   checkUserForNewPassword,
-  checkThatUserExistByUsername,
   checkUserForVerification,
 };

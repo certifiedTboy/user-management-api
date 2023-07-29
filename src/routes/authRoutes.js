@@ -13,6 +13,10 @@ const {
   checkEmailValidity,
 } = require("../middlewares/validators/authDataValidator");
 
+const {
+  checkPasswordResetDataInputIsEmpty,
+} = require("../middlewares/validators/verificationDataValidator");
+
 const router = express.Router();
 
 router.post(
@@ -25,12 +29,12 @@ router.post(
 );
 router.post("/login", checkEmailValidity, userLogin);
 
-router.post(
-  "/request-password-reset",
-  checkEmailValidity,
-  passwordResetRequest
-);
+router.post("/user/reset-password", checkEmailValidity, passwordResetRequest);
 
-router.post("/verify-password-resettoken", verifyPasswordResetData);
+router.post(
+  "/user/verify-resettoken",
+  checkPasswordResetDataInputIsEmpty,
+  verifyPasswordResetData
+);
 
 module.exports = router;

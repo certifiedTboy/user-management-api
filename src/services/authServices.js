@@ -9,6 +9,7 @@ const {
 const generatePasswordResetUrl = require("../utils/url-generator/passwordResetUrl");
 const createOrUpdatePlatformSession = require("./sessionServices");
 const { sendPasswordResetUrl } = require("./emailServices");
+const UnprocessableError = require("../../lib/errorInstances/UnprocessableError");
 
 /**
  * @method updateUserPassword
@@ -32,12 +33,21 @@ const updateUserPassword = async (email, password) => {
         await user.save();
         return user;
       } else {
-        // user password update for password reset request
-        user.password = hashedPassword;
-        user.resetPasswordToken = undefined;
-        user.resetPasswordExpires = undefined;
-        await user.save();
-        return user;
+        // this checks if user actually requested for a password reset
+        // which can be validated if resetPassword token is available on their data
+        if (user.resetPasswordToken) {
+          // user password update for password reset request
+          user.password = hashedPassword;
+          user.resetPasswordToken = undefined;
+          user.resetPasswordExpires = undefined;
+          await user.save();
+          return user;
+        } else {
+          // error response is sent if user haven't request for a password reset
+          throw new UnprocessableError(
+            "You have not requested for a password reset"
+          );
+        }
       }
     }
   }
@@ -54,7 +64,7 @@ const loginUser = async (email, password, ipAddress) => {
   const user = await checkThatUserIsVerified(email);
   if (user) {
     await verifyPassword(password, user.password);
-
+    // create new or update user session method
     const userSession = await createOrUpdatePlatformSession(
       user._id.toString(),
       ipAddress
@@ -71,25 +81,39 @@ const loginUser = async (email, password, ipAddress) => {
   }
 };
 
+/**
+ * @method requestPasswordReset
+ * @param {string} email
+ * @return {object <User>}
+ */
 const requestPasswordReset = async (email) => {
+  //check if user is verified
   const user = await checkThatUserIsVerified(email);
 
   if (user) {
+    // generate password reset url if user exist and isVerified
     const passwordResetData = await generatePasswordResetUrl(
       user._id.toString()
     );
 
     if (passwordResetData) {
       if (passwordResetData) {
+        // update user data in databases on url generation success
         user.resetPasswordToken = passwordResetData.passwordResetToken;
         user.resetPasswordExpires = passwordResetData.expiresAt;
+
         await user.save();
+        // send password reset url to email on user data update success
         await sendPasswordResetUrl(
           user.email,
           passwordResetData.passwordResetUrl
         );
 
-        return { email: user.email };
+        return {
+          email: user.email,
+          userId: user._id,
+          passwordResetToken: user.resetPasswordToken,
+        };
       }
     }
   }

@@ -2,7 +2,8 @@ const express = require("express");
 const {
   createUser,
   verifyUser,
-  updateUserName,
+  updateUser,
+  deleteUser,
   getCurrentUser,
 } = require("../controllers/userController");
 const {
@@ -13,6 +14,7 @@ const {
 } = require("../middlewares/validators/authDataValidator");
 const {
   checkUserAccountOwnership,
+  checkUserIsAdmin,
 } = require("../middlewares/authorization/userAuthorization");
 const {
   checkVerificationDataInputIsEmpty,
@@ -30,14 +32,16 @@ router.post(
 );
 router.post("/verify-user", checkVerificationDataInputIsEmpty, verifyUser);
 router.put(
-  "/update-username",
+  "/user/update",
   Authenticate,
   checkUserAccountOwnership,
   checkUserDataInputForUpdateIsEmpty,
   checkNameDataLength,
-  updateUserName
+  updateUser
 );
 
 router.get("/me", Authenticate, getCurrentUser);
+
+router.delete("/:userId/delete", Authenticate, checkUserIsAdmin, deleteUser);
 
 module.exports = router;

@@ -17,4 +17,18 @@ const checkUserAccountOwnership = async (req, res, next) => {
   }
 };
 
-module.exports = { checkUserAccountOwnership };
+const checkUserIsAdmin = async (req, res, next) => {
+  try {
+    if (req.user) {
+      if (req.user.userType !== "ADMIN") {
+        throw new UnprocessableError("Only admins are permitted to do this");
+      } else {
+        next();
+      }
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { checkUserAccountOwnership, checkUserIsAdmin };
