@@ -1,7 +1,7 @@
 const JWT = require("jsonwebtoken");
 const envVariable = require("../../config/config");
 
-const { JWT_TOKEN_SECRET } = envVariable;
+const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } = envVariable;
 
 /**
  * @method generateJWTToken
@@ -9,26 +9,40 @@ const { JWT_TOKEN_SECRET } = envVariable;
  * @param {string} expiresIn
  * @return {string <authToken>}
  */
-const generateJWTToken = (payload, expiresIn) => {
+const generateJWTToken = (payload, expiresIn, secret) => {
   if (!expiresIn) {
-    return JWT.sign(payload, config.JWT_TOKEN_SECRET);
+    return JWT.sign(payload, secret);
   }
 
-  return JWT.sign(payload, JWT_TOKEN_SECRET, { expiresIn });
+  return JWT.sign(payload, secret, { expiresIn });
 };
 
 /**
- * @method verifyToken
+ * @method verifyAccessToken
  * @param {string} token
  * @param {string} JWT_TOKEN_SECRET
  * @return {Boolean <true>}
  */
-const verifyToken = (token) => {
+const verifyAccessToken = (token) => {
   try {
-    return JWT.verify(token, JWT_TOKEN_SECRET);
+    return JWT.verify(token, ACCESS_TOKEN_SECRET);
   } catch (error) {
     throw new Error(error.message);
   }
 };
 
-module.exports = { generateJWTToken, verifyToken };
+/**
+ * @method verifyRefreshToken
+ * @param {string} token
+ * @param {string} JWT_TOKEN_SECRET
+ * @return {Boolean <true>}
+ */
+const verifyRefreshToken = (refreshToken) => {
+  try {
+    return JWT.verify(refreshToken, REFRESH_TOKEN_SECRET);
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+module.exports = { generateJWTToken, verifyAccessToken, verifyRefreshToken };

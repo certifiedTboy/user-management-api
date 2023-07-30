@@ -25,17 +25,15 @@ const setUserPassword = async (req, res, next) => {
 };
 
 const userLogin = async (req, res, next) => {
-  const userAgents = req.headers["user-agent"];
   try {
     const { email, password } = req.body;
     const ipAddress = req.ip;
 
     const data = await loginUser(email, password, ipAddress);
-
     if (data) {
       const jwtTokenOptions = {
-        expires: data.userSession.expiresAt,
-        maxAge: 59 * 60 * 1000,
+        expires: data.userSession.userSession.expiresAt,
+        maxAge: 59 * 60 * 60 * 1000,
         httpOnly: true,
         sameSite: "lax",
         secure: true,

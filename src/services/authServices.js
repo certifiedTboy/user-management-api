@@ -7,7 +7,7 @@ const {
   verifyPassword,
 } = require("../utils/general/passwordHelpers");
 const generatePasswordResetUrl = require("../utils/url-generator/passwordResetUrl");
-const createOrUpdatePlatformSession = require("./sessionServices");
+const { createOrUpdatePlatformSession } = require("./sessionServices");
 const { sendPasswordResetUrl } = require("./emailServices");
 const UnprocessableError = require("../../lib/errorInstances/UnprocessableError");
 
