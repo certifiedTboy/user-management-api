@@ -12,6 +12,21 @@ const refreshTokenHandler = async (req, res, next) => {
   try {
     const cookies = req.cookies;
     const accessToken = await generateAccessToken(cookies?.refreshToken || "");
+
+    if (!accessToken) {
+      const jwtTokenOptions = {
+        httpOnly: true,
+        sameSite: "none",
+        secure: true,
+      };
+      ResponseHandler.clearCookie(
+        res,
+        {},
+        jwtTokenOptions,
+        "failed verification, login with valid credentials"
+      );
+    }
+
     ResponseHandler.send(res, accessToken, "success");
   } catch (error) {
     next(error);

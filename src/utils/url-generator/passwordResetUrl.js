@@ -2,6 +2,11 @@ const envVariable = require("../../config/config");
 const dateTimeCalculator = require("../general/dateAndTimeCalculator");
 const randomCodeGenerator = require("../general/randomCodeGenerator");
 
+/**
+ * @method generatePasswordResetUrl
+ * @param {string} userId
+ * @return {object<passwordResetUrl>}
+ */
 const generatePasswordResetUrl = async (userId) => {
   const TOKEN_SEPERATOR = ":";
 
@@ -18,6 +23,7 @@ const generatePasswordResetUrl = async (userId) => {
   };
 };
 
+//generate random token
 const generateToken = () => {
   const passwordResetToken = randomCodeGenerator(60);
   const expiresAt = dateTimeCalculator(

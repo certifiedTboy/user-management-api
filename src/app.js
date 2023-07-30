@@ -38,7 +38,6 @@ app.use(
     crossOriginResourcePolicy: false,
   })
 );
-
 app.use(cookieParser());
 app.use(morgan("combined"));
 app.use(cors(corsOption));

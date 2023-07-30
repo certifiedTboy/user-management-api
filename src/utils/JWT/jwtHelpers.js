@@ -1,6 +1,5 @@
 const JWT = require("jsonwebtoken");
 const envVariable = require("../../config/config");
-
 const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } = envVariable;
 
 /**
