@@ -57,7 +57,7 @@ $ npm install
 $ npm start (Production server)
 $ npm run dev (Development server)
 
-# The server will initialize in the <http://localhost:3000>
+# The server will initialize in the <http://localhost:3001>
 ```
 
 ## CRUD Operations
