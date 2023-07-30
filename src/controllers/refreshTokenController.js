@@ -11,7 +11,7 @@ const ResponseHandler = require("../../lib/generalResponse/ResponseHandler");
 const refreshTokenHandler = async (req, res, next) => {
   try {
     const cookies = req.cookies;
-    const accessToken = await generateAccessToken(cookies.refreshToken);
+    const accessToken = await generateAccessToken(cookies?.refreshToken || "");
     ResponseHandler.send(res, accessToken, "success");
   } catch (error) {
     next(error);

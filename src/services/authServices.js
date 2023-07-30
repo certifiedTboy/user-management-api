@@ -7,7 +7,12 @@ const {
   verifyPassword,
 } = require("../utils/general/passwordHelpers");
 const generatePasswordResetUrl = require("../utils/url-generator/passwordResetUrl");
-const { createOrUpdatePlatformSession } = require("./sessionServices");
+const {
+  createOrUpdatePlatformSession,
+  deleteSessionByUserId,
+  deleteSession,
+} = require("./sessionServices");
+const { verifyRefreshToken } = require("../utils/JWT/jwtHelpers");
 const { sendPasswordResetUrl } = require("./emailServices");
 const UnprocessableError = require("../../lib/errorInstances/UnprocessableError");
 
@@ -41,6 +46,7 @@ const updateUserPassword = async (email, password) => {
           user.resetPasswordToken = undefined;
           user.resetPasswordExpires = undefined;
           await user.save();
+          await deleteSessionByUserId(user._id.toString());
           return user;
         } else {
           // error response is sent if user haven't request for a password reset
@@ -82,6 +88,16 @@ const loginUser = async (email, password, ipAddress) => {
 };
 
 /**
+ * @method logoutUser
+ * @param {string} refreshToken
+ * @return {Boolean<true>}
+ */
+const logoutUser = async (refreshToken) => {
+  const authPayload = await verifyRefreshToken(refreshToken);
+  return await deleteSessionByUserId(authPayload?.id);
+};
+
+/**
  * @method requestPasswordReset
  * @param {string} email
  * @return {object <User>}
@@ -119,4 +135,9 @@ const requestPasswordReset = async (email) => {
   }
 };
 
-module.exports = { updateUserPassword, loginUser, requestPasswordReset };
+module.exports = {
+  updateUserPassword,
+  loginUser,
+  requestPasswordReset,
+  logoutUser,
+};

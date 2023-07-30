@@ -2,6 +2,7 @@ const {
   updateUserPassword,
   loginUser,
   requestPasswordReset,
+  logoutUser,
 } = require("../services/authServices");
 const {
   verifyPasswordResetToken,
@@ -65,6 +66,23 @@ const userLogin = async (req, res, next) => {
   }
 };
 
+const userLogout = async (req, res, next) => {
+  try {
+    const cookies = req.cookies;
+    const response = await logoutUser(cookies.refreshToken);
+    if (response) {
+      const jwtTokenOptions = {
+        httpOnly: true,
+        sameSite: "none",
+        secure: true,
+      };
+      ResponseHandler.clearCookie(res, {}, jwtTokenOptions, "logout success");
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 /**
  * @method passwordResetRequest
  * @param {Request}req
@@ -117,4 +135,5 @@ module.exports = {
   userLogin,
   passwordResetRequest,
   verifyPasswordResetData,
+  userLogout,
 };

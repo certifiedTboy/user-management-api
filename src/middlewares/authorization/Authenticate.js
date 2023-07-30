@@ -8,11 +8,12 @@ const UnauthenticatedError = require("../../../lib/errorInstances/Unauthenticate
  * @param {Response} res
  * @param {NextFunction} next
  */
-const Authenticate = (req, res, next) => {
+const Authenticate = async (req, res, next) => {
   try {
     const authHeader = req.headers["authorization"];
     const authToken = _checkThatValidTokenFormatIsProvided(authHeader);
-    const authPayload = verifyAccessToken(authToken);
+    const authPayload = await verifyAccessToken(authToken);
+
     req.user = authPayload;
     next();
   } catch (error) {
