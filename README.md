@@ -18,6 +18,7 @@
 
 - [Introduction](#Introduction)
 - [Technologies](#Technologies)
+- [Enviromental Variables](#Enviromental-Variables)
 - [Get Started](#Get-Started)
 - [CRUD Operations](#Crud-Operations)
 - [Account Creation Flow](#Account-Creation-Flow)
@@ -33,13 +34,15 @@ This is a simple user management API that handles basic user creation of account
 
 ## Technologies
 
-The following tools were used in this project:
+The following technologies were used:
 
 - [Node Js](#Node)
-- [JWT for handling user authentication](#JWT)
+- [JWT for handling user authentication and authorization](#JWT)
 - [Nodemailer and Elastic Mail for handling email service](#)
 - [Mongo Db for Data Persistency](#)
 
+## Enviromental Variables 
+Refer to config/config file for all enviromental variables
 
 ## Get-Started
 
