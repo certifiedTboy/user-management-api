@@ -70,6 +70,15 @@ const getUserPlatformSession = async (userId) => {
 };
 
 /**
+ * @method deleteSession
+ * @param {string} sessionId
+ * @return {Void}
+ */
+const deleteSession = async (sessionId) => {
+  return await UserSession.findByIdAndRemove(sessionId);
+};
+
+/**
  * @method getAuthToken
  * @param {string} userId
  * @param {number} ttlInHours
@@ -84,4 +93,8 @@ const getAuthToken = async (userId, ttlInHours, secret) => {
   }
 };
 
-module.exports = { createOrUpdatePlatformSession, checkThatTokenSessionExist };
+module.exports = {
+  createOrUpdatePlatformSession,
+  checkThatTokenSessionExist,
+  deleteSession,
+};

@@ -8,6 +8,13 @@ const {
 } = require("../services/verificationServices");
 const ResponseHandler = require("../../lib/generalResponse/ResponseHandler");
 
+/**
+ * @method setUserPassword
+ * @param {Request}req
+ * @param {Response}res
+ * @param {NextFunction}next
+ * @return {Promise}
+ */
 const setUserPassword = async (req, res, next) => {
   try {
     const { password, email } = req.body;
@@ -24,6 +31,13 @@ const setUserPassword = async (req, res, next) => {
   }
 };
 
+/**
+ * @method userLogin
+ * @param {Request}req
+ * @param {Response}res
+ * @param {NextFunction}next
+ * @return {Promise<AuthToken>}
+ */
 const userLogin = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -51,6 +65,13 @@ const userLogin = async (req, res, next) => {
   }
 };
 
+/**
+ * @method passwordResetRequest
+ * @param {Request}req
+ * @param {Response}res
+ * @param {NextFunction}next
+ * @return {Promise<PasswordResetToken>}
+ */
 const passwordResetRequest = async (req, res, next) => {
   try {
     const { email } = req.body;
@@ -68,6 +89,13 @@ const passwordResetRequest = async (req, res, next) => {
   }
 };
 
+/**
+ * @method verifyPasswordResetData
+ * @param {Request}req
+ * @param {Response}res
+ * @param {NextFunction}next
+ * @return {Promise}
+ */
 const verifyPasswordResetData = async (req, res, next) => {
   try {
     const { userId, passwordResetToken } = req.body;
