@@ -40,9 +40,6 @@ const verifyRefreshToken = async (refreshToken, sessionId) => {
   try {
     return JWT.verify(refreshToken, REFRESH_TOKEN_SECRET);
   } catch (error) {
-    // if refresh token verification fails, token session is deleted from database
-    // and error message is returned
-    await deleteSession(sessionId);
     throw new Error(error.message);
   }
 };

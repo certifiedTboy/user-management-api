@@ -21,10 +21,7 @@ const verifyUserToken = async (userId, verificationToken) => {
     }
 
     // check verificationtoken time validity if it exceeds 24hours
-    const now = +new Date();
-    const verificationTokenExpiryDate = +user.verificationTokenExpiresAt;
-
-    if (now - verificationTokenExpiryDate >= 0) {
+    if (user.verificationTokenExpiresAt - new Date() <= 0) {
       // deletes user account on late verification attempt
       await deleteUserById(userId);
       throw UnprocessableError("expired verification token");
@@ -51,11 +48,8 @@ const verifyPasswordResetToken = async (userId, passwordResetToken) => {
     }
 
     // check passwordResetToken time validity if it exceeds 1hour
-    const now = new Date();
-    const passwordResetTokenExpiryDate = user.resetPasswordExpires;
-
-    // deletes password reset token on late verification attempt
-    if (now - passwordResetTokenExpiryDate >= 0) {
+    if (user.resetPasswordExpires - new Date() <= 0) {
+      // deletes password reset token on late verification attempt
       user.resetPasswordToken = undefined;
       user.resetPasswordExpires = undefined;
 

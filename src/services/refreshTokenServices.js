@@ -23,7 +23,7 @@ const generateAccessToken = async (refreshToken) => {
   const tokenSession = await checkThatTokenSessionExist(refreshToken);
 
   // delete token if validity elapses
-  if (tokenSession.updatedAt - new Date() <= 0) {
+  if (tokenSession.expiresAt - new Date() <= 0) {
     await deleteSession(tokenSession._id.toString());
     throw new UnauthenticatedError("invalid refresh token");
   }

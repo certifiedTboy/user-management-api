@@ -27,7 +27,7 @@ const refreshTokenHandler = async (req, res, next) => {
       );
     }
 
-    ResponseHandler.send(res, accessToken, "success");
+    ResponseHandler.created(res, accessToken, "success");
   } catch (error) {
     next(error);
   }
