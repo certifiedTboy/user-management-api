@@ -10,7 +10,6 @@ const generatePasswordResetUrl = require("../utils/url-generator/passwordResetUr
 const {
   createOrUpdatePlatformSession,
   deleteSessionByUserId,
-  deleteSession,
 } = require("./sessionServices");
 const { verifyRefreshToken } = require("../utils/JWT/jwtHelpers");
 const { sendPasswordResetUrl } = require("./emailServices");

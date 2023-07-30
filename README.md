@@ -83,8 +83,8 @@ $ npm run dev (Development server)
 
 ## Authentication Flow
 - Authentication and Authorization is handled with Jsonwebtoken (JWT) and it follows the OAUTH flow standard
-- On successful login, generates an access token and a refresh token, refresh token is sent as an HTTP only flagged cookie to client with a validity period of 24 hours. The access token is sent as a response data to be used for subsequent requests. The access token has a validity period of 30 Minutes. Tokens are signed with the user unique Id and user-type (ADMIN / USER) 
-- All subsequent request that requires authorization must be made with the access toekn as authorization request header with a Bearer flag.
+- On successful login, an access token and a refresh token is generated, refresh token is sent as an HTTP only flagged cookie to client with a validity period of 24 hours. The access token is sent as a response data to be used for subsequent requests. The access token has a validity period of 30 Minutes. Tokens are signed with the user unique Id and user-type (ADMIN / USER) 
+- All subsequent request that requires authorization must be made with the access token as authorization request header with a Bearer flag.
 - On access token expiration, a request is made to a /refresh-token endpoint with refresh token as req.cookies header. 
 - If refresh token is valid and contains verifiable data, a new access token is sent back to client for subsequent request. 
 - on refresh token expiration, client is required to login again to generate new refresh token and access token 
