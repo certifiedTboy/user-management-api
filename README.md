@@ -94,6 +94,8 @@ $ npm run dev (Development server)
 ## API Documentation
 All API http request endpoints are available on [https://documenter.getpostman.com/view/14393972/2s9XxsWcWm](https://documenter.getpostman.com/view/14393972/2s9XxsWcWm) 
 
+Use [https://user-management-api-y41j.onrender.com/api/v1](https://user-management-api-y41j.onrender.com) for live testing
+
 ## User Flow Design
 
 A simple IA Userflow Design is available on [https://whimsical.com/user-management-app-J2p1ryoGVwKXLR23WBJpaS](https://whimsical.com/user-management-app-J2p1ryoGVwKXLR23WBJpaS) 
