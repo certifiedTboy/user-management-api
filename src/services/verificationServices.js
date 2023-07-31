@@ -19,7 +19,6 @@ const verifyUserToken = async (userId, verificationToken) => {
     if (!user.verificationToken) {
       throw new NotFoundError("token does not exist or is invalid");
     }
-
     // check verificationtoken time validity if it exceeds 24hours
     if (user.verificationTokenExpiresAt - new Date() <= 0) {
       // deletes user account on late verification attempt
@@ -27,7 +26,7 @@ const verifyUserToken = async (userId, verificationToken) => {
       throw UnprocessableError("expired verification token");
     }
 
-    if (user.verificationToken !== `${verificationToken}`) {
+    if (user.verificationToken !== verificationToken) {
       throw new ConflictError("invalid verification token");
     }
     return { email: user.email };
