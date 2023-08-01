@@ -50,7 +50,7 @@ const userLogin = async (req, res, next) => {
         expires: data.userSession.userSession.expiresAt,
         maxAge: 59 * 60 * 60 * 1000,
         httpOnly: true,
-        sameSite: "lax",
+        sameSite: "none",
         secure: true,
       };
 
