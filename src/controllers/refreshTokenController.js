@@ -11,9 +11,9 @@ const ResponseHandler = require("../../lib/generalResponse/ResponseHandler");
 const refreshTokenHandler = async (req, res, next) => {
   try {
     const cookies = req.cookies;
-    const accessToken = await generateAccessToken(cookies?.refreshToken || "");
+    const result = await generateAccessToken(cookies?.refreshToken || "");
 
-    if (!accessToken) {
+    if (!result) {
       const jwtTokenOptions = {
         httpOnly: true,
         sameSite: "none",
@@ -27,7 +27,7 @@ const refreshTokenHandler = async (req, res, next) => {
       );
     }
 
-    ResponseHandler.created(res, accessToken, "success");
+    ResponseHandler.created(res, result.accessToken, "success");
   } catch (error) {
     next(error);
   }
